@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         animalListViewModel.animalListLiveData.observe(this, {
-            val a  = it
+
         })
     }
 }

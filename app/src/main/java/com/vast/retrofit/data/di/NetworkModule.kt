@@ -9,30 +9,24 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
-    factory { provideLoggingInterceptor() }
-    factory { provideOkHttpClient(get()) }
-    factory { provideRetrofit(get()) }
+    single { provideOkHttpClient() }
+    single { provideRetrofit(get()) }
     single { provideAnimalService(get()) }
 }
 
-fun provideLoggingInterceptor() {
-    HttpLoggingInterceptor().level = HttpLoggingInterceptor.Level.BODY
-}
+fun provideOkHttpClient(): OkHttpClient =
+    OkHttpClient.Builder().apply {
+        val logLevel = HttpLoggingInterceptor.Level.BODY
+        addInterceptor(HttpLoggingInterceptor().setLevel(logLevel))
+    }.build()
 
-fun provideOkHttpClient(interceptor: HttpLoggingInterceptor) {
-    OkHttpClient.Builder()
-        .addInterceptor(interceptor)
-        .build()
-}
-
-fun provideRetrofit(okHttpClient: OkHttpClient) {
-    Retrofit.Builder()
-        .baseUrl("https://zoo-animal-api.herokuapp.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .client(okHttpClient)
-        .build()
-}
+fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    Retrofit.Builder().apply {
+        baseUrl("https://zoo-animal-api.herokuapp.com")
+        addConverterFactory(GsonConverterFactory.create())
+        addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+        client(okHttpClient)
+    }.build()
 
 fun provideAnimalService(retrofit: Retrofit): AnimalService =
     retrofit.create(AnimalService::class.java)

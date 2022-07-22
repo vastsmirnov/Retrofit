@@ -1,7 +1,6 @@
 package com.vast.retrofit.domain.animals
 
-import com.vast.retrofit.domain.animals.Animal
-import rx.Single
+import io.reactivex.Single
 
 interface AnimalRepository {
     fun getList(): Single<List<Animal>>
