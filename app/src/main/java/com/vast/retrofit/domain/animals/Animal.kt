@@ -10,14 +10,5 @@ data class Animal(
     val name: String,
 
     @SerializedName("image_link")
-    val photo: String,
-
-    @SerializedName("habitat")
-    val habitat: String,
-
-    @SerializedName("diet")
-    val diet: String,
-
-    @SerializedName("geo_range")
-    val geoRange: String
+    val imageLink: String
     )
