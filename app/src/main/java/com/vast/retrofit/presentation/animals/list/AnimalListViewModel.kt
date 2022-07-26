@@ -35,4 +35,9 @@ class AnimalListViewModel(private val getAnimalListUseCase: GetAnimalListUseCase
                 })
         )
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
+    }
 }
